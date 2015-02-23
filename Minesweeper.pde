@@ -1,9 +1,8 @@
-
-
 import de.bezier.guido.*;
-//Declare and initialize NUM_ROWS and NUM_COLS = 20
+private final int NUM_ROWS = 20;
+private final int NUM_COLS = 20;
 private MSButton[][] buttons; //2d array of minesweeper buttons
-private ArrayList <MSButton> bombs; //ArrayList of just the minesweeper buttons that are mined
+private ArrayList <MSButton> bombs = new MSButton(); //ArrayList of just the minesweeper buttons that are mined
 
 void setup ()
 {
@@ -13,14 +12,22 @@ void setup ()
     // make the manager
     Interactive.make( this );
     
-    
-
+    bombs = new ArrayList <MSButton>();
     //declare and initialize buttons
     setBombs();
+    
+    for(int i = 0; i < NUM_ROWS.length; i++){
+        for(int j = 0; j < NUM_COL.length; j++){
+            buttons = new MSButton[NUM_ROWS][NUM_COLS];    
+        }
+    }
+
 }
 public void setBombs()
 {
-    //your code
+    if(!(bombs.contains(buttons[rows][cols]))){
+       bombs.add(buttons[rows][cols]);
+    }
 }
 
 public void draw ()
@@ -31,16 +38,22 @@ public void draw ()
 }
 public boolean isWon()
 {
-    //your code here
-    return false;
+    if(){
+        return true;
+    }
+    else{
+        return false;        
+    }
+
 }
 public void displayLosingMessage()
-{
-    //your code here
+{  
+   text(150,150, "you lost!", 10);
 }
+
 public void displayWinningMessage()
 {
-    //your code here
+    text(150,150, "you win", 10);
 }
 
 public class MSButton
@@ -52,8 +65,8 @@ public class MSButton
     
     public MSButton ( int rr, int cc )
     {
-        // width = 400/NUM_COLS;
-        // height = 400/NUM_ROWS;
+        width = 400/NUM_COLS;
+        height = 400/NUM_ROWS;
         r = rr;
         c = cc; 
         x = c*width;
@@ -82,8 +95,8 @@ public class MSButton
     {    
         if (marked)
             fill(0);
-        // else if( clicked && bombs.contains(this) ) 
-        //     fill(255,0,0);
+        else if( clicked && bombs.contains(this) ) 
+            fill(255,0,0);
         else if(clicked)
             fill( 200 );
         else 
@@ -97,18 +110,31 @@ public class MSButton
     {
         label = newLabel;
     }
-    public boolean isValid(int r, int c)
+    public boolean isValid(int rows, int cols)
     {
-        //your code here
+        if((rows < NUM_ROWS) && (cols < NUM_COLS) ){
+             return true;
+        }
         return false;
     }
     public int countBombs(int row, int col)
     {
         int numBombs = 0;
-        //your code here
+        if(isValid(rows,cols) == true){
+           if(bombs.contains(buttons[row][col])
+              || bombs.contains(buttons[row+1][col]) || bombs.contains(buttons[row][col+1])|| 
+                bombs.contains(buttons[row+1][col+1]) || bombs.contains(buttons[row][col+1]) ||
+                    bombs.contains(buttons[row+1][col+1]) || bombs.contains(buttons[row-1][col]) ||
+                        bombs.contains(buttons[row-1][col-1]) || bombs.contains(buttons[row][col-1]){
+              numBombs++;
+           }
+
+        }
         return numBombs;
     }
 }
+
+
 
 
 
